@@ -1,0 +1,39 @@
+---
+import type { ExperienceConfig } from '@/types'
+
+// import { cn } from '@/utils'
+
+// import Icon from './Icon.astro'
+
+interface Props {
+  experiences: ExperienceConfig[]
+}
+
+const { experiences } = Astro.props
+---
+
+<section>
+    {
+      experiences.map((experience) => (
+        <div class='flex flex-row w-full max-sm:flex-col'>
+          <div class='flex flex-col items-end border-r-.2rem min-w-40% px-4 pt-4 item-start max-lg:items-start max-sm:border-0 max-sm:py-4 max-sm:px-0 transition-all duration-300 ease-in-out hover:-translate-y-1 max-sm:hover:transform-none'>
+            <h3 class='my-0 line-height-tight'>{experience.organization}</h3>
+            <p class='my-0'>{experience.location}</p>
+          </div>
+
+          <div class='flex-col'>
+            {experience.activities.map((activity) => (
+            <div class='relative top-6 w-4 h-4 -left-.25 bg-muted rounded-full border-2 border-muted-foreground transition-transform hover:scale-125 hover:border-primary -translate-x-1/2 z-2 timeline-dot md:block hidden' />
+              <div class='flex flex-row max-lg:flex-col transition-all duration-300 ease-in-out hover:-translate-y-1 max-sm:hover:transform-none'>
+                <p class='mt-0 pl-6 font-semibold max-sm:px-0'>{activity.label}</p>
+                <span class='max-lg:hidden'>,&nbsp</span>
+                <samp class='font-medium max-sm:bg-muted w-fit rounded-1.5 max-sm:px-2 max-sm:py-1 max-lg:pl-6'>{activity.period}</samp>
+              </div>
+              
+                <p class='my-1 mx-6 text-sm leading-relaxed max-sm:px-0 transition-all duration-300 ease-in-out hover:-translate-y-1 max-sm:hover:transform-none'>{activity.description}</p>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+</section>
