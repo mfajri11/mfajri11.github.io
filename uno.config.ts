@@ -1,6 +1,9 @@
-import { defineConfig, presetMini, presetTypography, type Rule } from 'unocss'
+import { defineConfig, presetMini, presetTypography, type Rule } from 'unocss';
 
-import { integ } from './src/site.config.ts'
+
+
+import { integ } from './src/site.config.ts';
+
 
 const typographyCustom = integ.typography || {}
 
@@ -98,7 +101,8 @@ const typographyConfig = {
         padding: '0.3em 0.5em',
         border: '1px solid hsl(var(--border) / 1)',
         'border-radius': 'var(--radius)',
-        'background-color': 'hsl(var(--muted) / var(--un-bg-opacity, 1))'
+        'background-color': 'hsl(var(--muted) / var(--un-bg-opacity, 1))',
+        color: 'hsl(var(--muted-foreground) / var(--un-text-opacity))'
       },
       ':not(pre)>code::before,:not(pre)>code::after': {
         content: 'none'
@@ -198,6 +202,12 @@ const rules: Rule<object>[] = [
     'bg-cover',
     {
       'background-size': 'cover'
+    }
+  ],
+  [
+    'stroke-highlight',
+    {
+      stroke: 'var(--highlightColor, hsl(var(--primary) / var(--un-text-opacity))) !important;'
     }
   ]
 ]

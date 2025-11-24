@@ -1,11 +1,17 @@
-import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types'
+import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types';
+// import type { Label } from 'astro-pure/user';
+
+
+
+import type { AuthorConfig, ExtendedConfig } from './types';
+
 
 export const theme: ThemeUserConfig = {
   // === Basic configuration ===
   /** Title for your website. Will be used in metadata and as browser tab title. */
-  title: 'Astro Theme Pure',
+  title: 'Printf()',
   /** Will be used in index page & copyright declaration */
-  author: 'Pure Lab',
+  author: 'Fajri',
   /** Description metadata for your website. Can be used in page metadata. */
   description: 'Stay hungry, stay foolish',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
@@ -48,9 +54,7 @@ export const theme: ThemeUserConfig = {
   header: {
     menu: [
       { title: 'Blog', link: '/blog' },
-      { title: 'Docs', link: '/docs' },
       { title: 'Projects', link: '/projects' },
-      { title: 'Links', link: '/links' },
       { title: 'About', link: '/about' }
     ]
   },
@@ -61,28 +65,12 @@ export const theme: ThemeUserConfig = {
     year: `© ${new Date().getFullYear()}`,
     // year: `© 2019 - ${new Date().getFullYear()}`,
     links: [
-      // Registration link
-      {
-        title: 'Moe ICP 114514',
-        link: 'https://icp.gov.moe/?keyword=114514',
-        style: 'text-sm' // Uno/TW CSS class
-      },
-      {
-        title: 'Travelling',
-        link: 'https://www.travellings.cn/go.html',
-        style: 'text-sm'
-      },
       // Privacy Policy link
-      {
-        title: 'Site Policy',
-        link: '/terms/list',
-        pos: 2 // position set to 2 will be appended to copyright line
-      }
     ],
     /** Enable displaying a “Astro & Pure theme powered” link in your site’s footer. */
     credits: true,
     /** Optional details about the social media accounts for this site. */
-    social: { github: 'https://github.com/cworld1/astro-theme-pure' }
+    social: { github: 'https://github.com/mfajri11' }
   },
 
   content: {
@@ -97,30 +85,11 @@ export const theme: ThemeUserConfig = {
     /** Blog page size for pagination (optional) */
     blogPageSize: 8,
     // Currently support weibo, x, bluesky
-    share: ['weibo', 'x', 'bluesky']
+    share: []
   }
 }
 
 export const integ: IntegrationUserConfig = {
-  // Links management
-  // See: https://astro-pure.js.org/docs/integrations/links
-  links: {
-    // Friend logbook
-    logbook: [
-      { date: '2025-03-16', content: 'Is there a leakage?' },
-      { date: '2025-03-16', content: 'A leakage of what?' },
-      { date: '2025-03-16', content: 'I have a full seat of water, like, full of water!' },
-      { date: '2025-03-16', content: 'Must be the water.' },
-      { date: '2025-03-16', content: "Let's add that to the words of wisdom." }
-    ],
-    // Yourself link info
-    applyTip: [
-      { name: 'Name', val: theme.title },
-      { name: 'Desc', val: theme.description || 'Null' },
-      { name: 'Link', val: 'https://astro-pure.js.org/' },
-      { name: 'Avatar', val: 'https://astro-pure.js.org/favicon/favicon.ico' }
-    ]
-  },
   // Enable page search function
   pagefind: true,
   // Add a random quote to the footer (default on homepage footer)
@@ -145,31 +114,13 @@ export const integ: IntegrationUserConfig = {
   // A lightbox library that can add zoom effect
   // See: https://astro-pure.js.org/docs/integrations/others#medium-zoom
   mediumZoom: {
-    enable: true, // disable it will not load the whole library
+    enable: false, // disable it will not load the whole library
     selector: '.prose .zoomable',
     options: {
       className: 'zoomable'
     }
   },
-  // Comment system
-  waline: {
-    enable: true,
-    // Server service link
-    server: 'https://astro-theme-pure-waline.arthals.ink/',
-    // Refer https://waline.js.org/en/guide/features/emoji.html
-    emoji: ['bmoji', 'weibo'],
-    // Refer https://waline.js.org/en/reference/client/props.html
-    additionalConfigs: {
-      // search: false,
-      pageview: true,
-      comment: true,
-      locale: {
-        reaction0: 'Like',
-        placeholder: 'Welcome to comment. (Email to receive replies. Login is unnecessary)'
-      },
-      imageUploader: false
-    }
-  }
+  waline: {}
 }
 
 export const terms: CardListData = {
@@ -194,5 +145,88 @@ export const terms: CardListData = {
   ]
 }
 
-const config = { ...theme, integ } as Config
+export const author: AuthorConfig = {
+  author: 'Fajri',
+  email: 'mfajri805@gmail.com',
+  programmingLanguages: ['Go', 'Python', 'SQL', 'Javascript', 'HTML', 'CSS'],
+  techSkills: [
+    'Postgres',
+    'Redis',
+    'GRPC',
+    'GRPC Ecosystem (golang)',
+    'HTTP REST Api',
+    'Docker',
+    'RabbitMQ',
+    'TDD',
+    'Unit Testing',
+    'Double Test/Mocking',
+    'Postman Script',
+    'Swagger',
+    'Gnu Make'
+  ],
+  shareToSocials: [],
+  experiences: [
+    {
+      organization: 'PT Bank Rakya Indonesia Tbk',
+      location: 'Indonesia',
+      activities: [
+        {
+          period: 'Aug 2023 - present',
+          label: 'IT Project Officer (Contract Based)',
+          description: `I initiated and implemented comprehensive unit testing to enhance code reliability during deployment and reduce debugging time in testing environments. Additionally, I developed an automated migration feature that enables seamless user transfer from legacy applications or other BRI platforms to our application with just a login, contributing to approximately 15% of the overall migration process. To improve consistency and traceability across the codebase, I also standardized the logging format and established basic logging guidelines, such as wrapping errors instead of overwriting the original`,
+          descriptions: [
+            `Initiated and implemented comprehensive unit testing to enhance code confidence during deployment and minimize debugging time in testing environments.`,
+            `Developed an automated migration feature that seamlessly transfers users from the legacy application or other BRI's platform to our application, which only required user to login, contributing to approximately 15% of the overall migration process.`,
+            `Standardized logging format and defined basic logging guidelines to ensure consistency and improve traceability across the code base, for example, do not overwrite the original error but wrapping instead.`
+          ]
+        },
+        {
+          period: 'May - July 2023',
+          label: 'IT Internship',
+          description: `Worked collaboratively in a team of six on a Bank Rakyat Indonesia (BRI) capstone project, addressing real-world banking industry challenges while gaining a solid foundation in web development through both theoretical learning and hands-on practice`,
+          descriptions: [
+            `Engaged in a capstone project provided by Bank Rakyat Indonesia (BRI), aligning with real-world banking industry challenges.`,
+            `Worked collaboratively in a team of 3 backend and 3 frontend developers`,
+            `Gained a solid foundation in web development through a combination of theoretical learning and hands-on practice.`
+          ]
+        }
+      ]
+    },
+    {
+      organization: 'Tokopedia',
+      location: 'Indonesia',
+      activities: [
+        {
+          period: 'May - Aug 2022',
+          label: 'Software Engineer Intern',
+          description: `Contributed to developing a distributed rate limiter that reduced malicious OTP requests, lowering system load and operational costs. Refactored unit tests by replacing monkey patching with interface-based mocking for cross-platform compatibility (Linux and macOS). Designed a Grafana dashboard to monitor logging, requests per second, and key metrics including successful requests and error rates.`,
+          descriptions: [
+            `Contributed to the development of a distributed rate limiter that significantly reduced malicious OTP requests, helping to lower system load and reduce operational costs.`,
+            `Refactored unit tests by replacing monkey patching with interface-based mocking, ensuring compatibility across Linux (server), macOS (local developer).`,
+            `Created a Grafana dashboard to monitor logging, requests per second (RPS), and key metrics such as successful requests, system errors, and user errors.`
+          ]
+        }
+      ]
+    },
+    {
+      organization: 'GoTo Impact Foundation',
+      location: 'Indonesia',
+      activities: [
+        {
+          period: 'March - April 2022',
+          label: 'Backend Engineer participant',
+          description: `Participated in a GoTo Impact Foundation web development training focused on backend engineering, selected among the top 10% out of more than a thousand participants, which led to an internship opportunity at a leading Indonesian unicorn company. Gained hands-on experience with Ruby on Rails, Test-Driven Development using RSpec, and professional email etiquette, along with training in basic business English and communication skills through CAKAP.`,
+          descriptions: [
+            `Participated in a web development training program by the GoTo Impact Foundation, focusing on backend engineering. Selected among the top 10% of participants, earning an internship opportunity at one of Indonesia's unicorn companies.`,
+            `Learned web development using Ruby and Ruby on Rails, practiced Test-Driven Development (TDD) with RSpec, and gained practical knowledge of professional email etiquette. Also completed training in basic business English and communication skills by CAKAP`
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+
+const configWithInteg = { ...theme,  integ } as Config
+const config = { ...configWithInteg, ...author } as ExtendedConfig<Config, AuthorConfig>
 export default config

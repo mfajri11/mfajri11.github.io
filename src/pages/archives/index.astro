@@ -3,6 +3,7 @@ import { PostPreview } from 'astro-pure/components/pages'
 import { getBlogCollection, groupCollectionsByYear, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
+import {Icon} from '@/components/custom'
 
 export const prerender = true
 
@@ -17,7 +18,17 @@ const meta = {
 ---
 
 <PageLayout {meta}>
-  <Button title='Back' href='/blog' variant='back' />
+  <Button title='Back' href='/blog' variant='button'>
+    <Icon
+      name='back'
+      slot='before'
+      fill='none'
+      strokeWidth='2.5'
+      height='16'
+      width='16'
+      class='stroke-muted-foreground group-hover:stroke-highlight'
+    />
+  </Button>
 
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
