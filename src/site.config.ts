@@ -85,7 +85,7 @@ export const theme: ThemeUserConfig = {
     /** Blog page size for pagination (optional) */
     blogPageSize: 8,
     // Currently support weibo, x, bluesky
-    share: ['weibo', 'x', 'bluesky']
+    share: []
   }
 }
 
@@ -164,7 +164,7 @@ export const author: AuthorConfig = {
     'Swagger',
     'Gnu Make'
   ],
-  shareToSocials: ['x'],
+  shareToSocials: [],
   experiences: [
     {
       organization: 'PT Bank Rakya Indonesia Tbk',

@@ -1,18 +1,18 @@
 ---
 import type { CollectionKey, InferEntrySchema } from 'astro:content'
-// import config from 'virtual:config' // TODO: use virtual module
-import config  from '@/site-config'
 
-
+import type {ShareConfig} from '@/types'
 import { QRCode } from 'astro-pure/advanced'
-
 import { cn, getFormattedDate } from '@/utils'
+// import config from 'virtual:config' // TODO: use virtual module
+import config from '@/site-config'
+
 import Icon from './Icon.astro'
 
 interface Props<T extends CollectionKey> {
   data: InferEntrySchema<T>
   class?: string
-  buyMeCoffe: boolean
+  buyMeCoffe?: boolean
 }
 
 const {
@@ -24,7 +24,7 @@ const {
 // const image = typeof heroImage?.src === 'string' ? heroImage?.src : (heroImage?.src?.src ?? '')
 
 // TODO: add instagram and whatsapp
-const shares = {
+const shares: ShareConfig = {
   x: {
     link: `https://x.com/intent/tweet?text='${title}'&url='${Astro.url}'&via='${config.author}'`
   }
@@ -87,7 +87,7 @@ const shares = {
       {
         config.shareToSocials?.map((share) => (
           <a
-            href={shares[share].link}
+            href={shares[share]?.link}
             target='_blank'
             id={`share-${share}`}
             class='group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5'

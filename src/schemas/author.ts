@@ -3,7 +3,7 @@ import { z } from 'astro/zod';
 
 
 import { ExperienceSchema } from './experience';
-import { ShareSchema } from './share';
+import { SocialShareKey } from './share';
 
 
 export const AuthorSchema = () =>
@@ -19,6 +19,6 @@ export const AuthorSchema = () =>
     programmingLanguages: z.string().array().optional().default([]),
     techSkills: z.string().array().optional().default([]),
     phoneNumber: z.string().optional(),
-    shareToSocials: ShareSchema(),
+    shareToSocials: SocialShareKey(),
     experiences: z.array(ExperienceSchema())
   })
