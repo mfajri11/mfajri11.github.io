@@ -1,24 +1,37 @@
 ---
-import { PostPreview } from 'astro-pure/components/pages'
+import { PostPreview } from '@/components/custom'
 import { getBlogCollection, groupCollectionsByYear, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import { Icon } from '@/components/custom'
 
-export const prerender = true
+import { useTranslations, useTranslatedPath } from '@/i18n/utils'
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'id' } }
+  ]
+}
+
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
+const langLabel = lang === 'en' ? 'English' : 'Bahasa Indonesia'
+const t = useTranslations(lang as 'en' | 'id')
+const translatePath = useTranslatedPath(lang as 'en' | 'id')
 
 const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts)
+const langPosts = allPosts.filter((p) => (p.data.language || 'English') === langLabel)
+const allPostsByDate = sortMDByDate(langPosts)
 const allPostsByYear = groupCollectionsByYear(allPostsByDate)
 
 const meta = {
   description: 'A list of all the years of creating my posts',
-  title: 'Archives'
+  title: t('nav.archives')
 }
 ---
 
-<PageLayout {meta}>
-  <Button title='Back' href='/blog' variant='button'>
+<PageLayout meta={meta as any}>
+  <Button title='Back' href={translatePath('/blog')} variant='button'>
     <Icon
       name='back'
       slot='before'
@@ -32,10 +45,10 @@ const meta = {
 
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 text-3xl font-medium'>Archives</h1>
+      <h1 class='mb-6 text-3xl font-medium'>{t('nav.archives')}</h1>
     </div>
 
-    {allPosts.length === 0 && <p>No posts yet.</p>}
+    {langPosts.length === 0 && <p>No posts yet.</p>}
 
     <section id='content' class='animate' aria-label='Blog post list'>
       {

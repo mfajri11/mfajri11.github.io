@@ -2,25 +2,32 @@
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
-import { Paginator, PostPreview } from 'astro-pure/components/pages'
+import { Paginator } from 'astro-pure/components/pages'
+import { PostPreview } from '@/components/custom'
 import { getBlogCollection, getUniqueTags, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import { Icon } from '@/components/custom'
 import config from '@/site-config'
+import { languages, useTranslatedPath } from '@/i18n/utils'
 
 export const prerender = true
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const allPosts = await getBlogCollection()
   const allPostsByDate = sortMDByDate(allPosts)
-  const uniqueTags = getUniqueTags(allPostsByDate)
 
-  return uniqueTags.flatMap((tag) => {
-    const filterPosts = allPostsByDate.filter((post) => post.data.tags.includes(tag))
-    return paginate(filterPosts, {
-      pageSize: config.content.blogPageSize,
-      params: { tag }
+  return languages.flatMap((lang) => {
+    const langLabel = lang === 'en' ? 'English' : 'Bahasa Indonesia'
+    const langPosts = allPostsByDate.filter((post) => (post.data.language || 'English') === langLabel)
+    const uniqueTags = getUniqueTags(langPosts)
+
+    return uniqueTags.flatMap((tag) => {
+      const filterPosts = langPosts.filter((post) => post.data.tags.includes(tag))
+      return paginate(filterPosts, {
+        pageSize: config.content.blogPageSize,
+        params: { lang: lang === 'en' ? undefined : lang, tag }
+      })
     })
   })
 }
@@ -29,8 +36,10 @@ interface Props {
   page: Page<CollectionEntry<'blog'>>
 }
 
-const { page } = Astro.props
+const { page } = Astro.props as any as Props
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
 const { tag } = Astro.params
+const translatePath = useTranslatedPath(lang as 'en' | 'id')
 
 const meta = {
   description: `View all posts with the tag - ${tag}`,
@@ -53,8 +62,8 @@ const paginationProps = {
 }
 ---
 
-<PageLayout {meta}>
-  <Button title='Back' href='/blog' variant='button'>
+<PageLayout meta={meta as any}>
+  <Button title='Back' href={translatePath('/blog')} variant='button'>
     <Icon
       name='back'
       slot='before'

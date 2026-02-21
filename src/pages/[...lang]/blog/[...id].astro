@@ -1,0 +1,40 @@
+---
+import { render } from 'astro:content'
+
+import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import PostLayout from '@/layouts/BlogPost.astro'
+
+import { languages } from '@/i18n/ui'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const allPosts = sortMDByDate(await getBlogCollection())
+  
+  return Object.entries(languages).flatMap(([langCode, langLabel]) => {
+    const lang = langCode as 'en' | 'id'
+    const posts = allPosts.filter((post: any) => {
+      const postLangLabel = post.data.language || 'English'
+      return postLangLabel === langLabel
+    })
+    
+    return posts.map((post: any) => {
+      // Strip 'en/' or 'id/' prefix from post.id for cleaner URLs
+      const id = post.id.startsWith(`${langCode}/`) 
+        ? post.id.slice(langCode.length + 1) 
+        : post.id
+      return {
+        params: { lang: lang === 'en' ? undefined : lang, id },
+        props: { post, posts }
+      }
+    })
+  })
+}
+
+const { post, posts } = Astro.props
+const { Content, headings, remarkPluginFrontmatter } = await render(post)
+---
+
+<PostLayout post={post} posts={posts} headings={headings} remarkPluginFrontmatter={remarkPluginFrontmatter as Record<string, unknown>}>
+  <Content />
+</PostLayout>

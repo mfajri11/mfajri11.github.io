@@ -1,17 +1,28 @@
 ---
 import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
+import { useTranslations } from '@/i18n/utils'
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'id' } }
+  ]
+}
+
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
+const t = useTranslations(lang as 'en' | 'id')
 
 const headings = [
-  { depth: 2, slug: 'backends', text: 'Backend' },
-  { depth: 2, slug: 'personal-blog', text: 'Personal Blog' },
-  { depth: 2, slug: 'uixs', text: 'UI/UX' },
-  { depth: 2, slug: 'learnings', text: 'Learning' }
+  { depth: 2, slug: 'backends', text: t('projects.backends') },
+  { depth: 2, slug: 'personal-blog', text: t('projects.personal_blog') },
+  { depth: 2, slug: 'uixs', text: t('projects.ui_ux') },
+  { depth: 2, slug: 'learnings', text: t('projects.learnings') }
 ]
 ---
 
-<PageLayout title='Projects' {headings}>
-  <h2 id='backends'>Backends</h2>
+<PageLayout title={t('nav.projects')} headings={headings}>
+  <h2 id='backends'>{t('projects.backends')}</h2>
   <ProjectSection
     projects={[
       {
@@ -42,7 +53,7 @@ const headings = [
     ]}
   />
 
-  <h2 id='personal-blog'>Personal Blog</h2>
+  <h2 id='personal-blog'>{t('projects.personal_blog')}</h2>
   <ProjectSection
     projects={[
       {
@@ -60,7 +71,7 @@ const headings = [
     ]}
   />
 
-  <h2 id='uixs'>UI/UX</h2>
+  <h2 id='uixs'>{t('projects.ui_ux')}</h2>
   <ProjectSection
     projects={[
       {
@@ -96,7 +107,7 @@ const headings = [
     ]}
   />
 
-  <h2 id='learnings'>Learnings</h2>
+  <h2 id='learnings'>{t('projects.learnings')}</h2>
   <ProjectSection
     class='my-2'
     projects={[

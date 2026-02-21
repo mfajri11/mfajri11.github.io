@@ -53,8 +53,20 @@ const renderContent = async (post: CollectionEntry<'blog'>, site: URL) => {
   return String(file)
 }
 
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'id' } }
+  ]
+}
+
 const GET = async (context: AstroGlobal) => {
-  const allPostsByDate = sortMDByDate(await getBlogCollection()) as CollectionEntry<'blog'>[]
+  const { lang = 'en' } = context.params as { lang?: 'en' | 'id' }
+  const langLabel = lang === 'en' ? 'English' : 'Bahasa Indonesia'
+  const allPosts = await getBlogCollection()
+  const langPosts = allPosts.filter((p) => (p.data.language || 'English') === langLabel)
+  const allPostsByDate = sortMDByDate(langPosts) as CollectionEntry<'blog'>[]
   const siteUrl = context.site ?? new URL(import.meta.env.SITE)
 
   return rss({
@@ -70,7 +82,7 @@ const GET = async (context: AstroGlobal) => {
     items: await Promise.all(
       allPostsByDate.map(async (post) => ({
         pubDate: post.data.publishDate,
-        link: `/blog/${post.id}`,
+        link: lang === 'en' ? `/blog/${post.id.replace(/^en\//, '')}` : `/${lang}/blog/${post.id.replace(/^id\//, '')}`,
         customData: `<h:img src="${typeof post.data.heroImage?.src === 'string' ? post.data.heroImage?.src : post.data.heroImage?.src.src}" />
           <enclosure url="${typeof post.data.heroImage?.src === 'string' ? post.data.heroImage?.src : post.data.heroImage?.src.src}" />`,
         content: await renderContent(post, siteUrl),

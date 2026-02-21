@@ -1,0 +1,155 @@
+---
+import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
+import { Icon } from '@/components/custom'
+
+const lang = getLangFromUrl(Astro.url)
+const translatePath = useTranslatedPath(lang)
+
+const currentPath = Astro.url.pathname
+
+// To cleanly remove /id from path if switching back to English
+let basePath = currentPath
+if (lang === 'id' && currentPath.startsWith('/id')) {
+  basePath = currentPath.substring(3) || '/'
+}
+
+const langOptions = [
+  { code: 'en', label: 'English', flag: 'flag-us' },
+  { code: 'id', label: 'Bahasa Indonesia', flag: 'flag-id' }
+] as const
+
+const currentLang = langOptions.find((l) => l.code === lang)!
+---
+
+<lang-switcher class='relative'>
+  <button
+    id='langToggle'
+    class='lang-toggle box-content flex items-center gap-1.5 rounded-md border p-1.5 transition-colors hover:bg-border sm:group-[.not-top]:rounded-xl'
+    aria-label='Switch language'
+    aria-expanded='false'
+  >
+    <Icon name={currentLang.flag} class='size-5 rounded-sm overflow-hidden' />
+    <svg
+      class='chevron size-3 text-muted-foreground transition-transform duration-200'
+      xmlns='http://www.w3.org/2000/svg'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      stroke-width='3'
+      stroke-linecap='round'
+      stroke-linejoin='round'
+    >
+      <polyline points='6 9 12 15 18 9'></polyline>
+    </svg>
+  </button>
+
+  <div
+    id='langDropdown'
+    class='lang-dropdown absolute end-0 top-full z-50 mt-2 min-w-[170px] overflow-hidden rounded-xl border bg-background shadow-lg'
+  >
+    {
+      langOptions.map((option) => {
+        const href =
+          option.code === lang ? undefined : translatePath(basePath, option.code)
+        return (
+          <a
+            href={href}
+            class:list={[
+              'flex items-center gap-2.5 px-3 py-2 text-sm transition-colors',
+              option.code === lang
+                ? 'bg-muted font-medium text-foreground'
+                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            ]}
+            aria-current={option.code === lang ? 'true' : undefined}
+          >
+            <Icon name={option.flag} class='size-5 rounded-sm overflow-hidden' />
+            <span>{option.label}</span>
+            {option.code === lang && (
+              <svg
+                class='ms-auto size-4 text-primary'
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2.5'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+              >
+                <polyline points='20 6 9 17 4 12' />
+              </svg>
+            )}
+          </a>
+        )
+      })
+    }
+  </div>
+</lang-switcher>
+
+<script>
+  class LangSwitcher extends HTMLElement {
+    constructor() {
+      super()
+    }
+
+    connectedCallback() {
+      const toggle = this.querySelector('#langToggle') as HTMLButtonElement
+      const dropdown = this.querySelector('#langDropdown') as HTMLElement
+
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation()
+        const isOpen = dropdown.classList.contains('open')
+        if (isOpen) {
+          this.close()
+        } else {
+          this.open()
+        }
+      })
+
+      document.addEventListener('click', () => {
+        this.close()
+      })
+
+      dropdown.addEventListener('click', (e) => {
+        e.stopPropagation()
+      })
+    }
+
+    open() {
+      const toggle = this.querySelector('#langToggle') as HTMLButtonElement
+      const dropdown = this.querySelector('#langDropdown') as HTMLElement
+      dropdown.classList.add('open')
+      toggle.setAttribute('aria-expanded', 'true')
+    }
+
+    close() {
+      const toggle = this.querySelector('#langToggle') as HTMLButtonElement
+      const dropdown = this.querySelector('#langDropdown') as HTMLElement
+      dropdown.classList.remove('open')
+      toggle.setAttribute('aria-expanded', 'false')
+    }
+  }
+
+  customElements.define('lang-switcher', LangSwitcher)
+</script>
+
+<style>
+.lang-dropdown {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) scale(0.97);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      visibility 0.15s;
+}
+
+  .lang-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .lang-toggle[aria-expanded='true'] .chevron {
+    transform: rotate(180deg);
+  }
+</style>

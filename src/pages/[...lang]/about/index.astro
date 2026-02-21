@@ -1,0 +1,145 @@
+---
+import { Button, Spoiler } from 'astro-pure/user'
+import PageLayout from '@/layouts/CommonPage.astro'
+import { CertificationCard, Experience, Icon, SkillLayout } from '@/components/custom'
+import config from '@/site-config'
+import { useTranslations } from '@/i18n/utils'
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'id' } }
+  ]
+}
+
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
+const t = useTranslations(lang as 'en' | 'id')
+
+const headings = [
+  { depth: 2, slug: 'education', text: t('about.education') },
+  { depth: 2, slug: 'experience', text: t('about.experience') },
+  { depth: 2, slug: 'certification', text: t('about.certification') },
+  { depth: 2, slug: 'skill', text: t('about.skill') }
+]
+---
+
+<PageLayout title={t('nav.about')} headings={headings}>
+  <p>{t('about.subtitle')}</p>
+  <p>
+      {t('about.p1')}
+  </p>
+  <p>
+    {t('about.p2')} <Spoiler>{t('about.spoiler')}</Spoiler>
+  </p>
+
+  <Button title={t('button.emailMe')} class='w-fit' href={`mailto:${config.email}`} variant='button'>
+    <Icon name='email' slot='before' />
+  </Button>
+
+  {/* Education */}
+  <h2 id='education'>{t('about.education')}</h2>
+  <div class='flex gap-2 w-full'>
+    <div class='w-7/10 font-bold'>{t('about.edu.degree')}</div>
+    <div class='flex-row gap-2 w-full items-end'>
+      <div class='w-full text-end'>{t('about.edu.uni')}</div>
+      <div class='w-full text-end font-light'>{t('about.edu.date')}</div>
+    </div>
+  </div>
+  <ul class='w-70%'>
+    <li>
+      <b>{t('about.edu.coursework')}</b>{t('about.edu.coursework_detail')}
+    </li>
+    <li>
+      <b>{t('about.edu.final')}</b>{t('about.edu.final_detail')}
+    </li>
+  </ul>
+
+  {/* Experiences */}
+  <h2 id='experience'>{t('about.experience')}</h2>
+  <Experience experiences={[
+    {
+      organization: t('exp.bri.org'),
+      location: t('exp.bri.location'),
+      activities: [
+        {
+          period: t('exp.bri.period'),
+          label: t('exp.bri.title'),
+          description: t('exp.bri.summary'),
+          descriptions: [t('exp.bri.desc1'), t('exp.bri.desc2'), t('exp.bri.desc3')] as string[]
+        },
+        {
+          period: t('exp.bri_intern.period'),
+          label: t('exp.bri_intern.title'),
+          description: t('exp.bri_intern.summary'),
+          descriptions: [t('exp.bri_intern.desc1'), t('exp.bri_intern.desc2'), t('exp.bri_intern.desc3')] as string[]
+        }
+      ]
+    },
+    {
+      organization: t('exp.tokopedia.org'),
+      location: t('exp.tokopedia.location'),
+      activities: [
+        {
+          period: t('exp.tokopedia.period'),
+          label: t('exp.tokopedia.title'),
+          description: t('exp.tokopedia.summary'),
+          descriptions: [t('exp.tokopedia.desc1'), t('exp.tokopedia.desc2'), t('exp.tokopedia.desc3')] as string[]
+        }
+      ]
+    },
+    {
+      organization: t('exp.goto.org'),
+      location: t('exp.goto.location'),
+      activities: [
+        {
+          period: t('exp.goto.period'),
+          label: t('exp.goto.title'),
+          description: t('exp.goto.summary'),
+          descriptions: [t('exp.goto.desc1'), t('exp.goto.desc2')] as string[]
+        }
+      ]
+    }
+  ]} />
+
+  {/* Certification */}
+  <h2 id='certification'>{t('about.certification')}</h2>
+  <CertificationCard
+    certificateName={t('cert.skillvul.name')}
+    organization={t('cert.skillvul.org')}
+    credentialsLink='https://drive.google.com/file/d/1j_v74OYid37IgxXqjqlMD5zBf_TLFgn1/view?pli=1'
+    date={t('cert.skillvul.date')}
+    class='my-4'
+  />
+  <CertificationCard
+    certificateName={t('cert.bri_bootcamp.name')}
+    organization={t('cert.bri_bootcamp.org')}
+    credentialsLink='https://drive.google.com/file/d/1baE7K1to1pLRqqgWop75T9v6A6RObJPH/view'
+    date={t('cert.bri_bootcamp.date')}
+    class='my-4'
+  />
+  <CertificationCard
+    certificateName={t('cert.gigih.name')}
+    organization={t('cert.gigih.org')}
+    credentialsLink='https://drive.google.com/file/d/1baE7K1to1pLRqqgWop75T9v6A6RObJPH/view'
+    date={t('cert.gigih.date')}
+    class='my-4'
+  />
+  <CertificationCard
+    certificateName={t('cert.cakap.name')}
+    organization={t('cert.cakap.org')}
+    credentialsLink='https://drive.google.com/file/d/1cVWj1ExM_Fuv8-bJUtrTrzQG41xY5OeR/view'
+    date={t('cert.cakap.date')}
+    class='my-4'
+  />
+  <CertificationCard
+    certificateName={t('cert.freecodecamp.name')}
+    organization={t('cert.freecodecamp.org')}
+    credentialsLink='https://www.freecodecamp.org/certification/mfajri_11/scientific-computing-with-python-v7'
+    date={t('cert.freecodecamp.date')}
+    class='my-4'
+  />
+
+  <h2 id='skill'>{t('about.skill')}</h2>
+  <SkillLayout title={t('about.skills.languages')} skills={config.programmingLanguages} />
+  <SkillLayout title={t('about.skills.backend')} skills={config.techSkills} />
+</PageLayout>

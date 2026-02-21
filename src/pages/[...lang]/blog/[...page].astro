@@ -2,22 +2,35 @@
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
-import { Paginator, PostPreview } from 'astro-pure/components/pages'
+import { Paginator } from 'astro-pure/components/pages'
+import { PostPreview } from '@/components/custom'
 import { getBlogCollection, getUniqueTags, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import { Icon } from '@/components/custom'
 import config from '@/site-config'
+import { languages, useTranslations, useTranslatedPath } from '@/i18n/utils'
 
 export const prerender = true
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const collections = sortMDByDate(await getBlogCollection())
-  const uniqueTags = getUniqueTags(collections)
-  const collectionsCount = collections.length
-  return paginate(collections, {
-    pageSize: config.content.blogPageSize,
-    props: { uniqueTags, collectionsCount }
+  const allPosts = sortMDByDate(await getBlogCollection())
+  
+  return languages.flatMap((lang) => {
+    const langLabel = lang === 'en' ? 'English' : 'Bahasa Indonesia'
+    const collections = allPosts.filter((post) => {
+      const postLangLabel = post.data.language || 'English'
+      return postLangLabel === langLabel
+    })
+    
+    const uniqueTags = getUniqueTags(collections)
+    const collectionsCount = collections.length
+    
+    return paginate(collections, {
+      pageSize: config.content.blogPageSize,
+      params: { lang: lang === 'en' ? undefined : lang },
+      props: { uniqueTags, collectionsCount }
+    })
   })
 }) satisfies GetStaticPaths
 
@@ -27,11 +40,14 @@ interface Props {
   collectionsCount: number
 }
 
-const { page, uniqueTags, collectionsCount } = Astro.props
+const { page, uniqueTags, collectionsCount } = Astro.props as Props
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
+const t = useTranslations(lang as 'en' | 'id')
+const translatePath = useTranslatedPath(lang as 'en' | 'id')
 
 const meta = {
   description: 'Some posts or archives of my blog',
-  title: 'Blog'
+  title: t('nav.blog') as string
 }
 
 const paginationProps = {
@@ -50,8 +66,8 @@ const paginationProps = {
 }
 ---
 
-<PageLayout {meta}>
-  <Button title='Back' href='/' variant='button'>
+<PageLayout meta={meta as any}>
+  <Button title='Back' href={translatePath('/')} variant='button'>
     <Icon
       name='back'
       slot='before'
@@ -64,7 +80,7 @@ const paginationProps = {
   </Button>
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>Blog</h1>
+      <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>{t('nav.blog')}</h1>
     </div>
     {
       page.data.length === 0 ? (
@@ -77,7 +93,7 @@ const paginationProps = {
               <span class='text-muted-foreground'>
                 Page {page.currentPage} - Showing {page.data.length} of {collectionsCount} posts
               </span>
-              <a aria-label='View all blog by years' href='/archives' data-astro-prefetch>
+              <a aria-label='View all blog by years' href={translatePath('/archives')} data-astro-prefetch>
                 View all posts by years →
               </a>
             </div>
@@ -100,12 +116,12 @@ const paginationProps = {
               <ul class='text-bgColor flex flex-wrap gap-2'>
                 {uniqueTags.map((tag) => (
                   <li>
-                    <Button title={tag} href={`/tags/${tag}`} variant='pill' />
+                    <Button title={tag} href={translatePath(`/tags/${tag}`)} variant='pill' />
                   </li>
                 ))}
               </ul>
               <span class='mt-4 block sm:text-end'>
-                <a aria-label='View all blog categories' href='/tags' data-astro-prefetch>
+                <a aria-label='View all blog categories' href={translatePath('/tags')} data-astro-prefetch>
                   View all →
                 </a>
               </span>

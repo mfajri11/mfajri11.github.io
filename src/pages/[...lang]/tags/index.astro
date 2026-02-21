@@ -5,17 +5,32 @@ import { cn } from 'astro-pure/utils'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import { Icon } from '@/components/custom'
 
+import { useTranslations, useTranslatedPath } from '@/i18n/utils'
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'id' } }
+  ]
+}
+
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
+const langLabel = lang === 'en' ? 'English' : 'Bahasa Indonesia'
+const t = useTranslations(lang as 'en' | 'id')
+const translatePath = useTranslatedPath(lang as 'en' | 'id')
+
 const allPosts = await getBlogCollection()
-const allTags = getUniqueTagsWithCount(allPosts)
+const langPosts = allPosts.filter((p) => (p.data.language || 'English') === langLabel)
+const allTags = getUniqueTagsWithCount(langPosts)
 
 const meta = {
   description: "A list of all the topics I've written about in my posts",
-  title: 'All Tags'
+  title: t('nav.tags') as string
 }
 ---
 
-<PageLayout {meta}>
-  <Button title='Back' href='/blog' variant='button'>
+<PageLayout meta={meta as any}>
+  <Button title='Back' href={translatePath('/blog')} variant='button'>
     <Icon
       name='back'
       slot='before'
@@ -28,7 +43,7 @@ const meta = {
   </Button>
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 text-3xl font-medium'>Tags</h1>
+      <h1 class='mb-6 text-3xl font-medium'>{t('nav.tags')}</h1>
     </div>
 
     <div id='content' class='animate'>
@@ -38,7 +53,7 @@ const meta = {
             {allTags.map(([tag, val]) => (
               <li>
                 <Button
-                  href={`/tags/${tag}`}
+                  href={translatePath(`/tags/${tag}`)}
                   variant='pill'
                   class={cn(
                     'items-start gap-x-1',

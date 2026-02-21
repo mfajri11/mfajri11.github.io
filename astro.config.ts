@@ -63,6 +63,14 @@ export default defineConfig({
 
   // Prefetch Options
   prefetch: true,
+  // i18n Options
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'id'],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
   // Server Options
   server: {
     host: true

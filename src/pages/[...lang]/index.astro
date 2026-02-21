@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets'
+
 
 import { GithubCard } from 'astro-pure/advanced'
-import { PostPreview } from 'astro-pure/components/pages'
+import { PostPreview } from '@/components/custom'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
@@ -14,10 +14,24 @@ import Section from '@/components/home/Section.astro'
 import avatarDark from '@/assets/avatar_dark.png'
 import avatarLight from '@/assets/avatar.png'
 import config from '@/site-config'
+import { useTranslations, useTranslatedPath } from '@/i18n/utils'
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'id' } }
+  ]
+}
+
+const { lang = 'en' } = Astro.params as { lang?: 'en' | 'id' }
+const langLabel = lang === 'en' ? 'English' : 'Bahasa Indonesia'
+const t = useTranslations(lang as 'en' | 'id')
+const translatePath = useTranslatedPath(lang as 'en' | 'id')
 
 const MAX_POSTS = 5
 const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+const langPosts = allPosts.filter((p) => (p.data.language || 'English') === langLabel)
+const allPostsByDate = sortMDByDate(langPosts).slice(0, MAX_POSTS)
 ---
 
 <PageLayout meta={{ title: 'Home' }} highlightColor='#0160C9'>
@@ -34,17 +48,17 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
       <div class='flex flex-col items-center gap-y-4'>
         <h1 class='text-3xl font-bold'>{config.author}</h1>
         <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='Indonesia'>
+          <Label title={t('label.location')}>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
-          <Label title='Email' as='a' href={`mailto:${config.email}`} target='_blank'>
+          <Label title={t('label.email')} as='a' href={`mailto:${config.email}`} target='_blank'>
             <Icon name='email' class='size-5' slot='icon' />
           </Label>
-          <Label title='Github' as='a' href='https://github.com/mfajri11' target='_blank'>
+          <Label title={t('label.github')} as='a' href='https://github.com/mfajri11' target='_blank'>
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
           <Label
-            title='LinkedIn'
+            title={t('label.linkedin')}
             as='a'
             href='https://id.linkedin.com/in/muhammad-fajri-10a90a19a'
             target='_blank'
@@ -58,7 +72,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
       <Button
         href='https://drive.google.com/file/d/1MBSrc8Xuxv_w8PTaSxsUMRMP0Aah9It9/view?usp=drivesdk'
         target='_blank'
-        title='Download CV'
+        title={t('button.downloadCV')}
         variant='button'
       >
         <Icon name='download' slot='before' />
@@ -66,28 +80,21 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
-      <Section title='About Me'>
-        <p class='text-muted-foreground'>Hi Everyone 👋,</p>
+      <Section title={t('section.aboutMe')}>
+        <p class='text-muted-foreground'>{t('home.greeting')}</p>
         <p class='text-muted-foreground'>
-          I'm Muhamad Fajri—just call me Fajri. I'm a Software Engineer with about 2 years of
-          experience in the tech and banking space, mostly working with Go and Python. I've worked
-          on SSO, payment systems, and OTP services, and I'm really into clean code, microservices,
-          and making databases run smoothly and also building products that are scalable, reliable,
-          and easy to maintain.
+          {t('home.intro')}
         </p>
-        <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />
+        <Button title={t('button.moreAboutMe')} class='w-fit self-end' href={translatePath('/about')} variant='ahead' />
       </Section>
-      <Section title='About Printf()'>
+      <Section title={t('section.aboutPrintf')}>
         <p class='text-muted-foreground'>
-          printf() is a tiny space living in the vast network of connected computers we call the
-          Internet—a place where countless machines trade information at the speed of light. Here, I
-          print out ideas, stories, and curiosities into a universe made of wires and code, hoping
-          they reach someone on the other end.
+          {t('home.printf')}
         </p>
       </Section>
       {
         allPostsByDate.length > 0 && (
-          <Section title='Posts'>
+          <Section title={t('section.posts')}>
             <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
               {allPostsByDate.map((p) => (
                 <li class='flex flex-col gap-x-2 sm:flex-row'>
@@ -95,36 +102,20 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
                 </li>
               ))}
             </ul>
-            <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
+            <Button title={t('button.morePosts')} class='w-fit self-end' href={translatePath('/blog')} variant='ahead' />
           </Section>
         )
       }
 
       {/* Projects */}
-      <Section title='Projects'>
+      <Section title={t('section.projects')}>
         <GithubCard repo='mfajri11/go-family-catering' />
         <GithubCard repo='mfajri11/EfficientNet-AksaraSunda' />
-        <Button title='More projects' class='w-fit self-end' href='/projects' variant='ahead' />
+        <Button title={t('button.moreProjects')} class='w-fit self-end' href={translatePath('/projects')} variant='ahead' />
       </Section>
 
-      <Section title='Acknowledgments'>
-        <p class='text-muted-foreground'>
-          This project was built using <a
-            href='https://github.com/cworld1/astro-theme-pure'
-            target='_blank'
-            class='underline'>astro-pure</a
-          >, with a few modifications to fit my needs. I want to express my gratitude to the
-          creators for providing such an aesthetic and clean Astro template. My thanks also go to
-          the <a href='https://astro.build/' target='_blank' class='underline'>Astro</a> team for their
-          incredible framework that powers this site. I'd like to acknowledge to <a
-            href='https://codepen.io/wheresdara'
-            target='_blank'
-            class='underline'>wheresdara</a
-          > who shared the CSS stars animation that makes the homepage more engaging, IMHO. Inspiration
-          also comes from countless visual inspirations on Pinterest, which helped shape the logo for
-          this website. This project exists thanks to the generosity, creativity, and effort of these
-          tools, creators, and communities.
-        </p>
+      <Section title={t('section.acknowledgments')}>
+        <p class='text-muted-foreground' set:html={t('home.acknowledgments')} />
       </Section>
     </div>
   </main>
