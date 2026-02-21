@@ -4,7 +4,7 @@ description: 'Get started with the Astro Theme Pure'
 order: 1
 ---
 
-import { Steps, Aside, Tabs, TabItem } from 'astro-pure/user'
+import { Aside, Steps, TabItem, Tabs } from 'astro-pure/user'
 
 ## Installation
 
@@ -13,7 +13,9 @@ Two way to install. "Template" way is lightweight and simple, but hard to update
 ### Install Using Template
 
 <Aside type='tip'>
-Astro has a great article teaching you setting up project: [Install and set up Astro #Use a theme or starter template](https://docs.astro.build/en/install-and-setup/#use-a-theme-or-starter-template) 
+  Astro has a great article teaching you setting up project: [Install and set up Astro #Use a theme
+  or starter
+  template](https://docs.astro.build/en/install-and-setup/#use-a-theme-or-starter-template)
 </Aside>
 
 <Steps>
@@ -21,41 +23,44 @@ Astro has a great article teaching you setting up project: [Install and set up A
 1. Install the theme
 
    Execute the following command in the your user directory to install the theme:
-   
-   <Tabs>
-   <TabItem label='bun'>
-   ```shell
-   bun create astro@latest --template cworld1/astro-theme-pure
-   ```
-   <Aside type='tip'>
-   For Bun, if the installation is slow, it is recommended to use a mirror configuration by creating `bunfig.toml` under the project root directory:
 
-   ```toml title="bunfig.toml"
-   [install]
-   registry = "<npm mirror site>"
-   ```
+      <Tabs>
+<TabItem label='bun'>
 
-   For details about other PM mirror configs, you may need to see their official documents.
+```shell
+bun create astro@latest --template cworld1/astro-theme-pure
+```
+
+<Aside type='tip'>
+For Bun, if the installation is slow, it is recommended to use a mirror configuration by creating `bunfig.toml` under the project root directory:
+
+```toml title="bunfig.toml"
+[install]
+registry = "<npm mirror site>"
+```
+
+For details about other PM mirror configs, you may need to see their official documents.
+
    </Aside>
-   </TabItem>
-   <TabItem label='pnpm'>
-   ```shell
-   pnpm create astro@latest --template cworld1/astro-theme-pure
-   ```
-   </TabItem>
-   <TabItem label='yarn'>
-   ```shell
-   yarn create astro --template cworld1/astro-theme-pure
-   ```
-   </TabItem>
-   <TabItem label='npm'>
-   ```shell
-   npm create astro@latest -- --template cworld1/astro-theme-pure
-   ```
-   </TabItem>
-   </Tabs>
+</TabItem>
+<TabItem label='pnpm'>
+```shell
+pnpm create astro@latest --template cworld1/astro-theme-pure
+```
+</TabItem>
+<TabItem label='yarn'>
+```shell
+yarn create astro --template cworld1/astro-theme-pure
+```
+</TabItem>
+<TabItem label='npm'>
+```shell
+npm create astro@latest -- --template cworld1/astro-theme-pure
+```
+</TabItem>
+</Tabs>
 
-   By default, this command will use the template repository’s main branch. To use a different branch name, pass it as part of the `--template` argument: `cworld1/astro-theme-pure#<branch>`.
+By default, this command will use the template repository’s main branch. To use a different branch name, pass it as part of the `--template` argument: `cworld1/astro-theme-pure#<branch>`.
 
 2. Answer the questions and follow the instructions of the CLI wizard.
 
@@ -84,26 +89,10 @@ cd ./<your-project>
 ```
 
 <Tabs>
-<TabItem label='bun'>
-```shell
-bun dev
-```
-</TabItem>
-<TabItem label='pnpm'>
-```shell
-pnpm dev
-```
-</TabItem>
-<TabItem label='yarn'>
-```shell
-yarn run dev
-```
-</TabItem>
-<TabItem label='npm'>
-```shell
-npm run dev
-```
-</TabItem>
+  <TabItem label='bun'>```shell bun dev ```</TabItem>
+  <TabItem label='pnpm'>```shell pnpm dev ```</TabItem>
+  <TabItem label='yarn'>```shell yarn run dev ```</TabItem>
+  <TabItem label='npm'>```shell npm run dev ```</TabItem>
 </Tabs>
 
 Next, please read the configuration notes first and continue configuring the theme.
@@ -135,25 +124,23 @@ The theme file structure is as follows:
 
 ## Simple Setup
 
-
 <Steps>
 
 1. Remove docs files
-
    - Remove the `src/pages/docs` directory
    - Remove the menu declaration in `src/site.config.ts`:
-   
+
    ```ts title="src/site.config.ts"
    export const theme: ThemeUserConfig = {
-      // ...
-      /** Configure the header of your site. */
-      header: {
-         menu: [
-            { title: 'Blog', link: '/blog' },
-            { title: 'Docs', link: '/docs' }, // [!code --]
-            // ...
-         ],
-      },
+     // ...
+     /** Configure the header of your site. */
+     header: {
+       menu: [
+         { title: 'Blog', link: '/blog' },
+         { title: 'Docs', link: '/docs' } // [!code --]
+         // ...
+       ]
+     }
    }
    ```
 
@@ -176,7 +163,7 @@ The theme file structure is as follows:
 3. Change the site favicon.
 
    <Aside type='tip'>
-   [Favicon.io](https://favicon.io/) is a great tool that can help you generate favicons quickly.
+     [Favicon.io](https://favicon.io/) is a great tool that can help you generate favicons quickly.
    </Aside>
 
    Replace the `public/favicon/*` files with your own favicon.
@@ -191,14 +178,16 @@ The theme file structure is as follows:
 
    ```ts title="src/site.config.ts"
    export const theme: ThemeUserConfig = {
-      author: 'CWorld',
-      title: 'Astro Theme Pure',
-      site: 'https://astro-pure.js.org',
-      description: 'Stay hungry, stay foolish',
-      // ...
+     author: 'CWorld',
+     title: 'Astro Theme Pure',
+     site: 'https://astro-pure.js.org',
+     description: 'Stay hungry, stay foolish'
+     // ...
    }
 
-   export const integ: IntegrationUserConfig = { /* ... */ }
+   export const integ: IntegrationUserConfig = {
+     /* ... */
+   }
    // ...
    ```
 

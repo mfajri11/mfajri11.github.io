@@ -33,10 +33,12 @@ No breaking changes.
     content: {
       externalLinksContent: ' ↗', // [!code --]
       /** External links configuration */ // [!code ++]
-      externalLinks: { // [!code ++]
+      externalLinks: {
+        // [!code ++]
         content: ' ↗', // [!code ++]
         /** Properties for the external links element */ // [!code ++]
-        properties: { // [!code ++]
+        properties: {
+          // [!code ++]
           style: 'user-select:none' // [!code ++]
         } // [!code ++]
       }, // [!code ++]
@@ -64,7 +66,8 @@ No breaking changes.
   ```ts title="src/site.config.ts"
   export const theme: ThemeUserConfig = {
     footer: {
-      links: [ // [!code highlight:12]
+      links: [
+        // [!code highlight:12]
         {
           title: 'Moe ICP 114514',
           link: 'https://icp.gov.moe/?keyword=114514',

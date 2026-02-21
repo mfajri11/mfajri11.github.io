@@ -1,9 +1,6 @@
-import { defineConfig, presetMini, presetTypography, type Rule } from 'unocss';
+import { defineConfig, presetMini, presetTypography, type Rule } from 'unocss'
 
-
-
-import { integ } from './src/site.config.ts';
-
+import { integ } from './src/site.config.ts'
 
 const typographyCustom = integ.typography || {}
 

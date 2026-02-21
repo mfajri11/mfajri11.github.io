@@ -1,0 +1,32 @@
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+interface Props {
+  lightSrc: ImageMetadata
+  darkSrc: ImageMetadata
+  alt: string
+  class?: string
+}
+
+const { lightSrc, darkSrc, alt, class: className } = Astro.props
+---
+
+<div class={className}>
+  <Image src={lightSrc} alt={alt} class='light-avatar w-full h-full object-cover' loading='eager' />
+  <Image
+    src={darkSrc}
+    alt={alt}
+    class='dark-avatar w-full h-full object-cover hidden'
+    loading='eager'
+  />
+</div>
+
+<style>
+  :global(.dark) .light-avatar {
+    display: none;
+  }
+  :global(.dark) .dark-avatar {
+    display: block;
+  }
+</style>

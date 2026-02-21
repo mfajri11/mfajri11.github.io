@@ -1,10 +1,7 @@
-import { z } from 'astro/zod';
+import { z } from 'astro/zod'
 
-
-
-import { ExperienceSchema } from './experience';
-import { SocialShareKey } from './share';
-
+import { ExperienceSchema } from './experience'
+import { SocialShareKey } from './share'
 
 export const AuthorSchema = () =>
   z.object({

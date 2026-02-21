@@ -12,7 +12,6 @@ import { MdxRepl } from 'astro-pure/user'
 
 The `Quote` component is a simple component that displays a random quote.
 
-
 <MdxRepl>
 import { Quote } from 'astro-pure/advanced'
 
@@ -103,13 +102,15 @@ import { QRCode } from 'astro-pure/advanced'
 
 <QRCode
   content='https://github.com/cworld1/astro-theme-pure'
-  class='inline-flex max-w-44 p-3 bg-muted rounded-lg border' />
+  class='inline-flex max-w-44 p-3 bg-muted rounded-lg border'
+/>
 
 <Fragment slot='desc'>
 ```jsx
 import { QRCode } from 'astro-pure/advanced'
 
 // <QRCode /> // default to render current page link
+
 <QRCode
   content='https://github.com/cworld1/astro-theme-pure'
   class='inline-flex max-w-44 p-3 bg-muted rounded-lg border' />

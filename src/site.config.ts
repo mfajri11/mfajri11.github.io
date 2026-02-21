@@ -1,10 +1,8 @@
-import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types';
+import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types'
+
 // import type { Label } from 'astro-pure/user';
 
-
-
-import type { AuthorConfig, ExtendedConfig } from './types';
-
+import type { AuthorConfig, ExtendedConfig } from './types'
 
 export const theme: ThemeUserConfig = {
   // === Basic configuration ===
@@ -226,7 +224,6 @@ export const author: AuthorConfig = {
   ]
 }
 
-
-const configWithInteg = { ...theme,  integ } as Config
+const configWithInteg = { ...theme, integ } as Config
 const config = { ...configWithInteg, ...author } as ExtendedConfig<Config, AuthorConfig>
 export default config
