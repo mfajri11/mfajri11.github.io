@@ -11,7 +11,7 @@ import Avatar from '@/components/home/Avatar.astro'
 import CosmicSpace from '@/components/home/CosmicSpace.astro'
 // import ProjectCard from '@/components/home/ProjectCard.astro'
 import Section from '@/components/home/Section.astro'
-import avatarDark from '@/assets/avatar.png'
+import avatarDark from '@/assets/avatar_dark.png'
 import avatarLight from '@/assets/avatar.png'
 import config from '@/site-config'
 
@@ -20,7 +20,7 @@ const allPosts = await getBlogCollection()
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 ---
 
-<PageLayout meta={{ title: 'Home' }} highlightColor='#5D40D2'>
+<PageLayout meta={{ title: 'Home' }} highlightColor='#0160C9'>
   <main class='flex w-full flex-col items-center'>
     <CosmicSpace />
     <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
@@ -37,7 +37,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
           <Label title='Indonesia'>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
-          <Label title='Email' as='a' href=`mailto:${config.email}` target='_blank'>
+          <Label title='Email' as='a' href={`mailto:${config.email}`} target='_blank'>
             <Icon name='email' class='size-5' slot='icon' />
           </Label>
           <Label title='Github' as='a' href='https://github.com/mfajri11' target='_blank'>

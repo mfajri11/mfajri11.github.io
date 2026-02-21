@@ -19,6 +19,7 @@
   font-style: italic;
   font-display: swap;
 }
+
 html {
   font-family: 'Jost', sans-serif;
 }
@@ -31,7 +32,7 @@ html {
   --card-foreground: 252 10% 3.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 252 10% 3.9%;
-  --primary: 260 55% 45%;
+  --primary: 212 99% 40%;
   --primary-foreground: 0 0% 92.5%;
   --secondary: 252 4.8% 95.9%;
   --secondary-foreground: 252 5.9% 10%;
@@ -54,7 +55,7 @@ html {
   --card-foreground: 0 0% 98%;
   --popover: 252 10% 3.9%;
   --popover-foreground: 0 0% 98%;
-  --primary: 260 55% 55%;
+  --primary: 212 99% 50%;
   --primary-foreground: 252 3.7% 15.9%;
   --secondary: 252 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
@@ -68,15 +69,19 @@ html {
   --input: 252 3.7% 15.9%;
   --ring: 252 4.9% 83.9%;
 }
+
 :root {
   --un-default-border-color: hsl(var(--border) / 1);
 }
+
 html.dark {
   color-scheme: dark;
 }
 
 /* Global */
-a, .post-preview {
+a,
+.post-preview {
+
   /* transition: color 0.2s ease; */
   &:hover {
     /* color: hsl(var(--primary) / var(--un-text-opacity, 1)); */
@@ -93,6 +98,7 @@ a, .post-preview {
 } */
 
 
-github-card>a>*:not(:first-child), github-card>a> :first-child .flex-shrink-0 {
+github-card>a>*:not(:first-child),
+github-card>a> :first-child .flex-shrink-0 {
   color: hsl(var(--muted-foreground) / var(--un-text-opacity)) !important;
 }
